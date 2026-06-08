@@ -27,14 +27,21 @@ def zero_matrix(n: int) -> Matrix:
 
 # Intentionally simple O(n^3) matrix multiplication.
 # This loop order is correct but cache-unfriendly for matrix B.
+time_total = 0
+time_count = 0
 def matmul_slow(a: Matrix, b: Matrix, c: Matrix, n: int) -> None:
     for i in range(n):
         for j in range(n):
+            time_count += 1
+            start_time = time.perf_counter()
             total = 0.0
             for k in range(n):
                 total += a[i][k] * b[k][j]
             c[i][j] = total
-
+            end_time = time.perf_counter()
+            duration = end_time - start_time
+            time_total += duration
+    return time_total/time_count
 
 def checksum(m: Matrix, n: int) -> float:
     total = 0.0
@@ -83,6 +90,7 @@ def main(argv: list[str]) -> int:
         matmul_slow(a, b, c, n)
 
     print(f"n={n} reps={reps} checksum={checksum(c, n):.6f}")
+    print(f
     return 0
 
 
