@@ -16,7 +16,6 @@
 static inline uint64_t read_tsc(void) {
     _mm_lfence();
     uint64_t t = __rdtsc();
-    _mm_lfence();
     return t;
 }
 
@@ -150,26 +149,36 @@ uint64_t min_consecutive_diff(size_t num, const char *filename) {
     /*
      * Collect TSC readings.
      */
-    for (size_t i = 0; i < num; i++) {
+    timestamps[0] = read_tsc();
+    timestamps[1] = read_tsc();
+    uint64_t min_diff = timestamps[1]-timestamps[0];
+    diffs[0] = min_diff;
+    for (size_t i = 2; i < num; i++) {
         timestamps[i] = read_tsc();
+	uint64_t diff = timestamps[i] - timestamps[i-1]; 
+	diffs[i-1] = diff;
+
+	if (diff < min_diff){
+	    min_diff = diff;
+	}
     }
 
     /*
      * Initialize minimum difference using first pair.
      */
-    uint64_t min_diff = timestamps[1] - timestamps[0];
+//    uint64_t min_diff = timestamps[1] - timestamps[0];
 
     /*
      * Compute all consecutive differences and track minimum.
      */
-    for (size_t i = 1; i < num; i++) {
-        uint64_t diff = timestamps[i] - timestamps[i - 1];
-        diffs[i - 1] = diff;
+//    for (size_t i = 1; i < num; i++) {
+//        uint64_t diff = timestamps[i] - timestamps[i - 1];
+//        diffs[i - 1] = diff;
 
-        if (diff < min_diff) {
-            min_diff = diff;
-        }
-    }
+//       if (diff < min_diff) {
+//            min_diff = diff;
+//        }
+//    }
 
     /*
      * Write the differences to file, similar to rdtime.py.
