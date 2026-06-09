@@ -5,7 +5,7 @@ It computes a simple O(n^3) multiplication with a checksum at the end
 so the computation has an observable result.
 
 """
-
+import time
 import sys
 from typing import List
 
@@ -27,9 +27,9 @@ def zero_matrix(n: int) -> Matrix:
 
 # Intentionally simple O(n^3) matrix multiplication.
 # This loop order is correct but cache-unfriendly for matrix B.
-time_total = 0
-time_count = 0
-def matmul_slow(a: Matrix, b: Matrix, c: Matrix, n: int) -> None:
+def matmul_slow(a: Matrix, b: Matrix, c: Matrix, n: int) -> float:
+    time_count = 0
+    time_total = 0
     for i in range(n):
         for j in range(n):
             time_count += 1
@@ -87,10 +87,10 @@ def main(argv: list[str]) -> int:
     c = zero_matrix(n)
 
     for _ in range(reps):
-        matmul_slow(a, b, c, n)
+        time_required = matmul_slow(a, b, c, n)
+        print("Average time requires for a single cell in matrix" + str(time_required))
 
     print(f"n={n} reps={reps} checksum={checksum(c, n):.6f}")
-    print(f
     return 0
 
 

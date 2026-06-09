@@ -6,6 +6,7 @@ so the computation has an observable result.
 
 """
 
+import time
 import sys
 from typing import List
 
@@ -25,18 +26,25 @@ def zero_matrix(n: int) -> Matrix:
     return [[0.0 for _ in range(n)] for _ in range(n)]
 
 #Reorder loops to improve locality
-def matmul_fast1(a: Matrix, b: Matrix, c: Matrix, n: int) -> None:
+def matmul_fast1(a: Matrix, b: Matrix, c: Matrix, n: int) -> float:
+    time_total = 0
     for i in range(n):
         row_ai = a[i]
         row_ci = c[i]
         for j in range(n):
+            start = time.perf_counter()
             total = 0.0
             for k in range(n):
                 total += row_ai[k] * b[k][j]
             row_ci[j] = total
+            end = time.perf_counter()
+            duration = end - start
+            time_total += duration
+    return time_total / (n * n)
 
 #Reorder loops to reduce inner loops
-def matmul_fast2(a: Matrix, b: Matrix, c: Matrix, n: int) -> None:
+def matmul_fast2(a: Matrix, b: Matrix, c: Matrix, n: int) -> float:
+    start = time.perf_counter()
     for i in range(n):
         row_ai = a[i]
         row_ci = c[i]
@@ -47,15 +55,18 @@ def matmul_fast2(a: Matrix, b: Matrix, c: Matrix, n: int) -> None:
             row_bk = b[k]
             for j in range(n):
               row_ci[j] += aik * row_bk[j]
+    end = time.perf_counter()
+    duration = end-start
+    return duration / (n*n)
 
 def transpose(m: Matrix) -> Matrix:
     n = len(m)
     return [[m[i][j] for i in range(n)] for j in range(n)]
 
 #Matrix transpose method
-def matmul_fast3(a: Matrix, b: Matrix, c: Matrix, n: int) -> None:
+def matmul_fast3(a: Matrix, b: Matrix, c: Matrix, n: int) -> float:
+    start = time.perf_counter()
     bt = transpose(b)
-
     for i in range(n):
         row_ai = a[i]
         row_ci = c[i]
@@ -65,6 +76,9 @@ def matmul_fast3(a: Matrix, b: Matrix, c: Matrix, n: int) -> None:
             for k in range(n):
                 total += row_ai[k] * row_btj[k]
             row_ci[j] = total
+    end = time.perf_counter()
+    duration = end -  start
+    return duration / (n * n)
 
 
 def checksum(m: Matrix, n: int) -> float:
@@ -111,9 +125,9 @@ def main(argv: list[str]) -> int:
     c = zero_matrix(n)
 
     for _ in range(reps):
-        matmul_fast2(a, b, c, n)
-
-    print(f"n={n} reps={reps} checksum={checksum(c, n):.6f}")
+        print("method 1 average cell time:"+ str(matmul_fast1(a, b, c, n)))
+        print("method 2 average cell time:"+ str(matmul_fast2(a, b, c, n)))
+        print("method 3 average cell time:"+ str(matmul_fast3(a, b, c, n)))
     return 0
 
 
