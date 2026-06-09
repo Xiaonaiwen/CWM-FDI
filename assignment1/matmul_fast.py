@@ -125,8 +125,6 @@ def main(argv: list[str]) -> int:
     c = zero_matrix(n)
 
     for _ in range(reps):
-        print("method 1 average cell time:"+ str(matmul_fast1(a, b, c, n)))
-        print("method 2 average cell time:"+ str(matmul_fast2(a, b, c, n)))
         print("method 3 average cell time:"+ str(matmul_fast3(a, b, c, n)))
     return 0
 
