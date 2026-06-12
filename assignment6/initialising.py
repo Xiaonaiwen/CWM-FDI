@@ -62,8 +62,8 @@ def zeroMatrixTimeDifference2D():
     b = np.zeros((sizeOfOneDimension,sizeOfOneDimension))
     npEnd = time.perf_counter()
     npT = npEnd - npStart
-    return normal-npT
-    
+    return (normal-npT)/normal
+
 def zeroMatrixTimeDifference3D():
     normalStart = time.perf_counter()
     a = [[[0 for _ in range (sizeOfOneDimension)] for _ in range (sizeOfOneDimension)] for _ in range (sizeOfOneDimension)]
@@ -75,7 +75,7 @@ def zeroMatrixTimeDifference3D():
     b = np.zeros((sizeOfOneDimension,sizeOfOneDimension,sizeOfOneDimension))
     npEnd = time.perf_counter()
     npT = npEnd - npStart
-    return normal-npT
+    return (normal-npT)/normal
  
 def zeroMatrixTimeDifference4D():
     normalStart = time.perf_counter()
@@ -88,7 +88,7 @@ def zeroMatrixTimeDifference4D():
     b = np.zeros((sizeOfOneDimension,sizeOfOneDimension,sizeOfOneDimension,sizeOfOneDimension))
     npEnd = time.perf_counter()
     npT = npEnd - npStart
-    return normal-npT
+    return (normal-npT)/normal
  
 def zeroMatrixTimeDifference5D():
     normalStart = time.perf_counter()
@@ -101,7 +101,7 @@ def zeroMatrixTimeDifference5D():
     b = np.zeros((sizeOfOneDimension,sizeOfOneDimension,sizeOfOneDimension,sizeOfOneDimension,sizeOfOneDimension))
     npEnd = time.perf_counter()
     npT = npEnd - npStart
-    return normal-npT
+    return (normal-npT)/normal
  
 def zeroMatrixTimeDifference6D():
     normalStart = time.perf_counter()
@@ -114,7 +114,7 @@ def zeroMatrixTimeDifference6D():
     b = np.zeros((sizeOfOneDimension,sizeOfOneDimension,sizeOfOneDimension,sizeOfOneDimension,sizeOfOneDimension,sizeOfOneDimension))
     npEnd = time.perf_counter()
     npT = npEnd - npStart
-    return normal-npT
+    return (normal-npT)/normal
  
 def zeroCheck():
     total2 = 0
@@ -132,11 +132,11 @@ def zeroCheck():
  
 #        print(i)
 
-    print("Average extra time saving to use numpy array to create zero 2D matrix per element: " + str(total2/numberOfRepeatTimes/(sizeOfOneDimension**2)))
-    print("Average extra time saving to use numpy array to create zero 3D matrix per element: " + str(total3/numberOfRepeatTimes/(sizeOfOneDimension**3)))
-    print("Average extra time saving to use numpy array to create zero 4D matrix per element: " + str(total4/numberOfRepeatTimes/(sizeOfOneDimension**4)))
-    print("Average extra time saving to use numpy array to create zero 5D matrix per element: " + str(total5/numberOfRepeatTimes/(sizeOfOneDimension**5)))
-    print("Average extra time saving to use numpy array to create zero 6D matrix per element: " + str(total6/numberOfRepeatTimes/(sizeOfOneDimension**6)))
+    print("Average time saving percentage to use numpy array to create zero 2D matrix: " + str(total2/numberOfRepeatTimes))
+    print("Average time saving percentage to use numpy array to create zero 3D matrix: " + str(total3/numberOfRepeatTimes))
+    print("Average time saving percentage to use numpy array to create zero 4D matrix: " + str(total4/numberOfRepeatTimes))
+    print("Average time saving percentage to use numpy array to create zero 5D matrix: " + str(total5/numberOfRepeatTimes))
+    print("Average time saving percentage to use numpy array to create zero 6D matrix: " + str(total6/numberOfRepeatTimes))
  
 
 def randomMatrixTimeDifference2D():
@@ -241,8 +241,8 @@ def generatingOneRandomCompare():
 if __name__ == "__main__":
 #    elementCheck()
     zeroCheck()
-    randomCheck()
-    print("Generating random number difference using random and np.random: " + str(generatingOneRandomCompare())) 
+   # randomCheck()
+    #print("Generating random number difference using random and np.random: " + str(generatingOneRandomCompare())) 
 
 
 
